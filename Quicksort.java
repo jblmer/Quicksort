@@ -7,9 +7,9 @@ public class Quicksort {
         int[] array = new int[10];
 
         //array bekommt zufällige Zahlen an alle Stellen des Arrays eingetragen
-        Random rn = new Random();
+        Random zufallszahl = new Random();
         for (int i = 0; i < array.length; i++) {
-            array[i] = rn.nextInt(20);
+            array[i] = zufallszahl.nextInt(20);
         }
 
         //Durch eine for-Schleife wird das Array einmal vor dem sortieren ausgegeben
@@ -32,10 +32,12 @@ public class Quicksort {
         quicksort(array, 0, array.length - 1);
     }
 
-    private static void quicksort(int[] array, int left, int right) {
-        //die if-Abfrage überprüft, ob die beiden Grenzen (links und rechts) sich in der Mitte treffen und damit das Array fertig aufgeteilt wurde / wenn ja, ist das Array fertig aufgeteilt und die Methode wird abgebrochen
-        if (left >= right) return;
+    private static void quicksort(int[] array, int links, int right) {
+        // End of recursion reached?
+        if (links >= right) return;
 
+        int pivotPos = partition(array, links, right);
+        quicksort(array, links, pivotPos - 1);
         //das Array wird in mit der Methode "partition" geteilt / der Bereich wird mit "links" und "rechts" angegeben (je nach Durchlauf unterschiedliche Arraygrenzen)
         //der Index des Pivot wird zurückgegeben und zwischengespeichert, dieser Index wird gebraucht, um zu wissen in welchem Bereich die "neuen" Arrays sortiert werden müssen
         int pivotPos = partition(array, left, right);
@@ -46,12 +48,15 @@ public class Quicksort {
         //und einmal um oberhalb des Pivots das Array zu sortieren
         quicksort(array, pivotPos + 1, right);
     }
+
+    public static int partition(int[] array, int links, int right) {
     //die Methode "partition" legt ein Pivot fest und sortiert alle Items, die kleiner sind unterhalb des Pivots und die größeren darüber
     //zusätzlich gibt es den Index des Pivots zurück
     public static int partition(int[] array, int left, int right) {
         //das Pivot wird festgelegt (zur Einfachheit nehmen wir das letzte Element)
         int pivot = array[right];
 
+        int i = links;
         //i gibt die linke Grenze an
         int i = left;
         //j gibt die rechte Grenze an
@@ -65,6 +70,8 @@ public class Quicksort {
                 i++;
             }
 
+            // Find the last element < pivot
+            while (j > links && array[j] >= pivot) {
             //es wird wieder ein Element gesucht, welches kleiner ist als das Pivot (wird auch durch den Index "j" zwischengespeichert)
             while (j > left && array[j] >= pivot) {
                 j--;
@@ -82,7 +89,7 @@ public class Quicksort {
         }
 
         // i == j means we haven't checked this index yet.
-        // Move i right if necessary so that i marks the start of the right array.
+        // Move i rechts if necessary so that i marks the start of the rechts array.
         if (i == j && array[i] < pivot) {
             i++;
         }
@@ -91,8 +98,8 @@ public class Quicksort {
         if (array[i] != pivot) {
             //ArrayUtils.swap(array, i, right);
             int temp = array[i];
-            array[i] = array[right];
-            array[right] = temp;
+            array[i] = array[rechts];
+            array[rechts] = temp;
         }
         return i;
     }
