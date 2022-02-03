@@ -28,14 +28,15 @@ public class Quicksort {
     }
 
     public static void sort(int[] array) {
-        //das Array wird dem "quicksort" übergeben / beim 1. Aufruf ist das Array noch nicht geteilt, deswegen wird von 0 - letztes Element übergeben
+        //das Array wird der Methode "quicksort" übergeben / beim 1. Aufruf ist das Array noch nicht geteilt, deswegen wird "0 - letztes Element" übergeben / später wird die "quicksort" Methode mit anderen Grenzen aufgerufen
         quicksort(array, 0, array.length - 1);
     }
 
     private static void quicksort(int[] array, int left, int right) {
-        // End of recursion reached?
+        //die if-Abfrage überprüft, ob die beiden Grenzen (links und rechts) sich in der Mitte treffen und damit das Array fertig aufgeteilt wurde / wenn ja, ist das Array fertig aufgeteilt und die Methode wird abgebrochen
         if (left >= right) return;
 
+        //
         int pivotPos = partition(array, left, right);
         quicksort(array, left, pivotPos - 1);
         quicksort(array, pivotPos + 1, right);
