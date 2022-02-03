@@ -7,9 +7,9 @@ public class Quicksort {
         int[] array = new int[10];
 
         //array bekommt zufällige Zahlen an alle Stellen des Arrays eingetragen
-        Random rn = new Random();
+        Random zufallszahl = new Random();
         for (int i = 0; i < array.length; i++) {
-            array[i] = rn.nextInt(20);
+            array[i] = zufallszahl.nextInt(20);
         }
 
         //Durch eine for-Schleife wird das Array einmal vor dem sortieren ausgegeben
@@ -32,19 +32,19 @@ public class Quicksort {
         quicksort(array, 0, array.length - 1);
     }
 
-    private static void quicksort(int[] array, int left, int right) {
+    private static void quicksort(int[] array, int links, int right) {
         // End of recursion reached?
-        if (left >= right) return;
+        if (links >= right) return;
 
-        int pivotPos = partition(array, left, right);
-        quicksort(array, left, pivotPos - 1);
+        int pivotPos = partition(array, links, right);
+        quicksort(array, links, pivotPos - 1);
         quicksort(array, pivotPos + 1, right);
     }
 
-    public static int partition(int[] array, int left, int right) {
+    public static int partition(int[] array, int links, int right) {
         int pivot = array[right];
 
-        int i = left;
+        int i = links;
         int j = right - 1;
         while (i < j) {
             // Find the first element >= pivot
@@ -53,7 +53,7 @@ public class Quicksort {
             }
 
             // Find the last element < pivot
-            while (j > left && array[j] >= pivot) {
+            while (j > links && array[j] >= pivot) {
                 j--;
             }
 
@@ -69,7 +69,7 @@ public class Quicksort {
         }
 
         // i == j means we haven't checked this index yet.
-        // Move i right if necessary so that i marks the start of the right array.
+        // Move i rechts if necessary so that i marks the start of the rechts array.
         if (i == j && array[i] < pivot) {
             i++;
         }
@@ -78,8 +78,8 @@ public class Quicksort {
         if (array[i] != pivot) {
             //ArrayUtils.swap(array, i, right);
             int temp = array[i];
-            array[i] = array[right];
-            array[right] = temp;
+            array[i] = array[rechts];
+            array[rechts] = temp;
         }
         return i;
     }
