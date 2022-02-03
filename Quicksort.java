@@ -3,13 +3,13 @@ import java.util.Random;
 public class Quicksort {
 
     public static void main(String[] args) {
-        //array ist das Array, welches sortiert werden soll / es hat 10 items
-        int[] array = new int[10];
+        //ist das Array, welches sortiert werden soll / es hat 10 items
+        int[] array = new int[10000];
 
-        //array bekommt zufällige Zahlen an alle Stellen des Arrays eingetragen
+        //bekommt zufällige Zahlen an alle Stellen des Arrays eingetragen
         Random zufallszahl = new Random();
         for (int i = 0; i < array.length; i++) {
-            array[i] = zufallszahl.nextInt(20);
+            array[i] = zufallszahl.nextInt(1000);
         }
 
         //Durch eine for-Schleife wird das Array einmal vor dem sortieren ausgegeben
@@ -36,32 +36,28 @@ public class Quicksort {
         // End of recursion reached?
         if (links >= right) return;
 
-        int pivotPos = partition(array, links, right);
-        quicksort(array, links, pivotPos - 1);
         //das Array wird in mit der Methode "partition" geteilt / der Bereich wird mit "links" und "rechts" angegeben (je nach Durchlauf unterschiedliche Arraygrenzen)
         //der Index des Pivot wird zurückgegeben und zwischengespeichert, dieser Index wird gebraucht, um zu wissen in welchem Bereich die "neuen" Arrays sortiert werden müssen
-        int pivotPos = partition(array, left, right);
+        int pivotPos = partition(array, links, right);
 
         //die Methode ruft sich selbst zwei weitere Male auf
         //einmal um unterhalb des Pivots das Array zu sortieren
-        quicksort(array, left, pivotPos - 1);
+        quicksort(array, links, pivotPos - 1);
         //und einmal um oberhalb des Pivots das Array zu sortieren
         quicksort(array, pivotPos + 1, right);
     }
 
-    public static int partition(int[] array, int links, int right) {
     //die Methode "partition" legt ein Pivot fest und sortiert alle Items, die kleiner sind unterhalb des Pivots und die größeren darüber
     //zusätzlich gibt es den Index des Pivots zurück
-    public static int partition(int[] array, int left, int right) {
+    public static int partition(int[] array, int links, int rechts) {
         //das Pivot wird festgelegt (zur Einfachheit nehmen wir das letzte Element)
-        int pivot = array[right];
+        int pivot = array[rechts];
 
-        int i = links;
         //i gibt die linke Grenze an
-        int i = left;
+        int i = links;
         //j gibt die rechte Grenze an
         //da das letzte Item von Rechts das Pivot ist, müssen wir die rechte Seite um 1 nach links verschieben
-        int j = right - 1;
+        int j = rechts - 1;
 
         //die while-Schleife läuft so lange, bis die rechte Grenze und die linke Grenze sich in der Mitte treffen
         while (i < j) {
@@ -70,38 +66,40 @@ public class Quicksort {
                 i++;
             }
 
-            // Find the last element < pivot
-            while (j > links && array[j] >= pivot) {
             //es wird wieder ein Element gesucht, welches kleiner ist als das Pivot (wird auch durch den Index "j" zwischengespeichert)
-            while (j > left && array[j] >= pivot) {
+            while (j > links && array[j] >= pivot) {
                 j--;
             }
 
-            // If the greater element is left of the lesser element, switch them
+            //"i" muss kleiner "j" sein, damit sie getauscht werden können
             if (i < j) {
                 //die Elemente mit Index "i" und "j" werden getauscht (temp ist eine Hilfsvariable)
                 int temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
+
+                //die Grenzen werden weiter nach innen verschoben für den nächsten Durchlauf
                 i++;
                 j--;
             }
         }
 
-        // i == j means we haven't checked this index yet.
-        // Move i rechts if necessary so that i marks the start of the rechts array.
+        //"i" == "j" heißt, dass dieser Index noch nicht geprüft wurde
+        //Wenn das Item an Index "i" > Pivot ist, muss nichts passieren, sonst muss das Pivot um 1 nach rechts verschoben werden (array[i] < pivot)
         if (i == j && array[i] < pivot) {
             i++;
         }
 
-        // Move pivot element to its final position
+        //das Pivot ist das letzte Item / es muss final noch einmal zwischen die aufgeteilten Bereiche getauscht werden
+        //
         if (array[i] != pivot) {
-            //ArrayUtils.swap(array, i, right);
+            //das Pivot bekommt den finalen Platz (temp ist eine Hilfsvariable)
+            //array[rechts] gibt das Pivot an / "i" ist die finale Position
             int temp = array[i];
             array[i] = array[rechts];
             array[rechts] = temp;
         }
+        //der Index des Pivots wird zurückgegeben
         return i;
     }
-
 }
