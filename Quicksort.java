@@ -36,31 +36,43 @@ public class Quicksort {
         //die if-Abfrage überprüft, ob die beiden Grenzen (links und rechts) sich in der Mitte treffen und damit das Array fertig aufgeteilt wurde / wenn ja, ist das Array fertig aufgeteilt und die Methode wird abgebrochen
         if (left >= right) return;
 
-        //
+        //das Array wird in mit der Methode "partition" geteilt / der Bereich wird mit "links" und "rechts" angegeben (je nach Durchlauf unterschiedliche Arraygrenzen)
+        //der Index des Pivot wird zurückgegeben und zwischengespeichert, dieser Index wird gebraucht, um zu wissen in welchem Bereich die "neuen" Arrays sortiert werden müssen
         int pivotPos = partition(array, left, right);
+
+        //die Methode ruft sich selbst zwei weitere Male auf
+        //einmal um unterhalb des Pivots das Array zu sortieren
         quicksort(array, left, pivotPos - 1);
+        //und einmal um oberhalb des Pivots das Array zu sortieren
         quicksort(array, pivotPos + 1, right);
     }
-
+    //die Methode "partition" legt ein Pivot fest und sortiert alle Items, die kleiner sind unterhalb des Pivots und die größeren darüber
+    //zusätzlich gibt es den Index des Pivots zurück
     public static int partition(int[] array, int left, int right) {
+        //das Pivot wird festgelegt (zur Einfachheit nehmen wir das letzte Element)
         int pivot = array[right];
 
+        //i gibt die linke Grenze an
         int i = left;
+        //j gibt die rechte Grenze an
+        //da das letzte Item von Rechts das Pivot ist, müssen wir die rechte Seite um 1 nach links verschieben
         int j = right - 1;
+
+        //die while-Schleife läuft so lange, bis die rechte Grenze und die linke Grenze sich in der Mitte treffen
         while (i < j) {
-            // Find the first element >= pivot
+            //es wird ein Element gesucht, dass größer ist als das Pivot (der Index des Elements ist im Index "i" zwischengespeichert)
             while (array[i] < pivot) {
                 i++;
             }
 
-            // Find the last element < pivot
+            //es wird wieder ein Element gesucht, welches kleiner ist als das Pivot (wird auch durch den Index "j" zwischengespeichert)
             while (j > left && array[j] >= pivot) {
                 j--;
             }
 
             // If the greater element is left of the lesser element, switch them
             if (i < j) {
-                //ArrayUtils.swap(array, i, j);
+                //die Elemente mit Index "i" und "j" werden getauscht (temp ist eine Hilfsvariable)
                 int temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
